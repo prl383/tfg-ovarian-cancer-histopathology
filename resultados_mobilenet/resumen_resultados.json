@@ -1,0 +1,43 @@
+{
+  "fecha_ejecucion": "2026-08-13 00:09:43",
+  "dispositivo": "cuda",
+  "experimento_ganador": "conDA",
+  "experimentos": {
+    "sinDA": {
+      "mejores_hiperparametros": {
+        "lr": 0.001331121608073689,
+        "weight_decay": 1.2087541473056965e-06,
+        "batch_size": 16,
+        "optimizer_name": "sgd",
+        "dropout": 0.35742692948967136
+      },
+      "epocas_modelo_final": 25,
+      "metricas_test_final": {
+        "accuracy": 0.7466666666666667,
+        "precision_macro": 0.7563483575248281,
+        "recall_macro": 0.7466666666666667,
+        "f1_macro": 0.7439238347859037,
+        "balanced_accuracy": 0.7466666666666667,
+        "auc_roc_ovr": 0.9473333333333332
+      }
+    },
+    "conDA": {
+      "mejores_hiperparametros": {
+        "lr": 0.0006218704727769079,
+        "weight_decay": 0.0048696409415209,
+        "batch_size": 32,
+        "optimizer_name": "adamw",
+        "dropout": 0.4486212527455788
+      },
+      "epocas_modelo_final": 14,
+      "metricas_test_final": {
+        "accuracy": 0.76,
+        "precision_macro": 0.7658424908424909,
+        "recall_macro": 0.76,
+        "f1_macro": 0.7564907510402504,
+        "balanced_accuracy": 0.76,
+        "auc_roc_ovr": 0.947111111111111
+      }
+    }
+  }
+}

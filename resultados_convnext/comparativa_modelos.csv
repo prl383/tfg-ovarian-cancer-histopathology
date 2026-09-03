@@ -1,0 +1,4 @@
+modelo,fecha,experimento_ganador,accuracy,precision_macro,recall_macro,f1_macro,balanced_accuracy,auc_roc_ovr
+MobileNetV2,2026-08-13 00:09:45,conDA,0.7600,0.7658,0.7600,0.7565,0.7600,0.9471
+ResNet50,2026-08-13 13:44:11,conDA,0.8667,0.8763,0.8667,0.8642,0.8667,0.9680
+ConvNeXt-Tiny,2026-08-13 19:33:26,conDA,0.8800,0.8864,0.8800,0.8801,0.8800,0.9693

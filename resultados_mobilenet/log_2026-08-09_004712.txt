@@ -1,0 +1,554 @@
+Guardando también una copia de esta ejecución en: resultados/log_2026-08-09_004712.txt
+Dispositivo utilizado: cuda
+Please provide your Kaggle credentials to download this dataset. Learn more: http://bit.ly/kaggle-creds
+Your Kaggle username: Dataset URL: https://www.kaggle.com/datasets/bitsnpieces/ovarian-cancer-and-subtypes-dataset-histopathology
+Downloading ovarian-cancer-and-subtypes-dataset-histopathology.zip to ./ovarian-cancer-and-subtypes-dataset-histopathology
+
+Clases detectadas en el dataset:
+['Clear_Cell', 'Endometri', 'Mucinous', 'Non_Cancerous', 'README.txt', 'Serous']
+Clases (orden usado por ImageFolder): ['Clear_Cell', 'Endometri', 'Mucinous', 'Non_Cancerous', 'Serous']
+Reparto inicial -> Pool (Train+Val para CV): 423 imágenes | Test independiente: 75 imágenes
+
+======================================================================
+PASO 10: COMPARATIVA CON DATA AUGMENTATION VS. SIN DATA AUGMENTATION
+======================================================================
+
+Entrenando SIN Data Augmentation...
+Downloading: "https://download.pytorch.org/models/mobilenet_v2-b0353104.pth" to /home/patriciarodriguez/.cache/torch/hub/checkpoints/mobilenet_v2-b0353104.pth
+Entrenando CON Data Augmentation...
+
+SIN augmentation -> Mejor Val Loss: 0.2394 (época 7) | Gap Train-Val Accuracy en ese punto: 0.1087
+CON augmentation -> Mejor Val Loss: 0.2581 (época 33) | Gap Train-Val Accuracy en ese punto: 0.0940
+
+######################################################################
+# EXPERIMENTO: sinDA
+######################################################################
+
+--- [sinDA] Búsqueda de hiperparámetros con Optuna (10 trials) ---
+
+[sinDA | Optuna] Trial 0 — probando: {'lr': 0.0014016747088009842, 'weight_decay': 0.0004436042658326631, 'batch_size': 64, 'optimizer_name': 'adam'}
+[sinDA | Optuna] Trial 0 -> F1-macro medio (validación): 0.8520
+
+[sinDA | Optuna] Trial 1 — probando: {'lr': 0.0011166334162879775, 'weight_decay': 8.284068671694972e-05, 'batch_size': 64, 'optimizer_name': 'adamw'}
+[sinDA | Optuna] Trial 1 -> F1-macro medio (validación): 0.8550
+
+[sinDA | Optuna] Trial 2 — probando: {'lr': 3.544182898740974e-05, 'weight_decay': 0.0030940739593679307, 'batch_size': 32, 'optimizer_name': 'adamw'}
+[sinDA | Optuna] Trial 2 -> F1-macro medio (validación): 0.8459
+
+[sinDA | Optuna] Trial 3 — probando: {'lr': 0.003592005024167401, 'weight_decay': 6.673528799130095e-05, 'batch_size': 64, 'optimizer_name': 'sgd'}
+[sinDA | Optuna] Trial 3 -> F1-macro medio (validación): 0.8457
+
+[sinDA | Optuna] Trial 4 — probando: {'lr': 4.576538875932502e-05, 'weight_decay': 3.908375135020846e-05, 'batch_size': 16, 'optimizer_name': 'adam'}
+[sinDA | Optuna] Trial 4 -> F1-macro medio (validación): 0.8436
+
+[sinDA | Optuna] Trial 5 — probando: {'lr': 0.001763894561651656, 'weight_decay': 5.997332445686203e-06, 'batch_size': 64, 'optimizer_name': 'sgd'}
+[sinDA | Optuna] Trial 5 -> F1-macro medio (validación): 0.8439
+
+[sinDA | Optuna] Trial 6 — probando: {'lr': 7.983910985388576e-05, 'weight_decay': 0.00010015529259793029, 'batch_size': 16, 'optimizer_name': 'sgd'}
+[sinDA | Optuna] Trial 6 -> F1-macro medio (validación): 0.8034
+
+[sinDA | Optuna] Trial 7 — probando: {'lr': 0.000488513065788859, 'weight_decay': 0.007223319806138576, 'batch_size': 16, 'optimizer_name': 'adamw'}
+[sinDA | Optuna] Trial 7 -> F1-macro medio (validación): 0.8515
+
+[sinDA | Optuna] Trial 8 — probando: {'lr': 3.933078702331174e-05, 'weight_decay': 4.644842567141666e-05, 'batch_size': 64, 'optimizer_name': 'adam'}
+[sinDA | Optuna] Trial 8 -> F1-macro medio (validación): 0.8279
+
+[sinDA | Optuna] Trial 9 — probando: {'lr': 1.1377521074711157e-05, 'weight_decay': 5.8220732361184434e-05, 'batch_size': 16, 'optimizer_name': 'adam'}
+[sinDA | Optuna] Trial 9 -> F1-macro medio (validación): 0.8225
+
+[sinDA] Mejores hiperparámetros: {'lr': 0.0011166334162879775, 'weight_decay': 8.284068671694972e-05, 'batch_size': 64, 'optimizer_name': 'adamw'}
+[sinDA] Mejor F1-macro medio (validación, 5-fold): 0.8550
+
+--- [sinDA] Ejecución final del 5-Fold CV ---
+
+======================================================================
+[sinDA] FOLD 1/5
+======================================================================
+Época 01/50 | Train Loss: 1.2139, Train Acc: 0.5651 | Val Loss: 1.0721, Val Acc: 0.6118
+Época 02/50 | Train Loss: 0.4734, Train Acc: 0.8639 | Val Loss: 0.9867, Val Acc: 0.6588
+Época 03/50 | Train Loss: 0.3151, Train Acc: 0.8905 | Val Loss: 0.6573, Val Acc: 0.7765
+Época 04/50 | Train Loss: 0.1831, Train Acc: 0.9467 | Val Loss: 0.5648, Val Acc: 0.8588
+Época 05/50 | Train Loss: 0.1280, Train Acc: 0.9704 | Val Loss: 0.5095, Val Acc: 0.8588
+Época 06/50 | Train Loss: 0.0980, Train Acc: 0.9882 | Val Loss: 0.4757, Val Acc: 0.8706
+Época 07/50 | Train Loss: 0.0647, Train Acc: 0.9970 | Val Loss: 0.4659, Val Acc: 0.8471
+Época 08/50 | Train Loss: 0.0612, Train Acc: 0.9911 | Val Loss: 0.4718, Val Acc: 0.8588
+Época 09/50 | Train Loss: 0.0464, Train Acc: 0.9970 | Val Loss: 0.5121, Val Acc: 0.8706
+Época 10/50 | Train Loss: 0.0412, Train Acc: 1.0000 | Val Loss: 0.5201, Val Acc: 0.8706
+Época 11/50 | Train Loss: 0.0278, Train Acc: 0.9970 | Val Loss: 0.5270, Val Acc: 0.8471
+Época 12/50 | Train Loss: 0.0271, Train Acc: 1.0000 | Val Loss: 0.5150, Val Acc: 0.8588
+Época 13/50 | Train Loss: 0.0258, Train Acc: 0.9970 | Val Loss: 0.5318, Val Acc: 0.8588
+Época 14/50 | Train Loss: 0.0223, Train Acc: 1.0000 | Val Loss: 0.5659, Val Acc: 0.8471
+Época 15/50 | Train Loss: 0.0195, Train Acc: 1.0000 | Val Loss: 0.5756, Val Acc: 0.8353
+Época 16/50 | Train Loss: 0.0203, Train Acc: 1.0000 | Val Loss: 0.5587, Val Acc: 0.8588
+Época 17/50 | Train Loss: 0.0164, Train Acc: 1.0000 | Val Loss: 0.5516, Val Acc: 0.8588
+Early Stopping activado en la época 17 (paciencia=10).
+Tiempo de entrenamiento del Fold 1: 0.43 minutos.
+
+--- Resultados cuantitativos del Fold 1 (mejor época: 7) ---
+Train      -> Loss: 0.0647 | Accuracy: 0.9970
+Validación -> Accuracy: 0.8471 | Precision: 0.8429 | Recall: 0.8471 | F1-macro: 0.8433 | Balanced Acc: 0.8471 | AUC-ROC: 0.9696
+Test       -> Accuracy: 0.7867 | Precision: 0.8108 | Recall: 0.7867 | F1-macro: 0.7827 | Balanced Acc: 0.7867 | AUC-ROC: 0.9384
+
+======================================================================
+[sinDA] FOLD 2/5
+======================================================================
+Época 01/50 | Train Loss: 1.1445, Train Acc: 0.5562 | Val Loss: 1.0148, Val Acc: 0.6118
+Época 02/50 | Train Loss: 0.4571, Train Acc: 0.8550 | Val Loss: 0.8050, Val Acc: 0.7294
+Época 03/50 | Train Loss: 0.2462, Train Acc: 0.9260 | Val Loss: 0.6788, Val Acc: 0.8118
+Época 04/50 | Train Loss: 0.1820, Train Acc: 0.9527 | Val Loss: 0.5929, Val Acc: 0.8353
+Época 05/50 | Train Loss: 0.1319, Train Acc: 0.9704 | Val Loss: 0.5806, Val Acc: 0.8471
+Época 06/50 | Train Loss: 0.0825, Train Acc: 0.9911 | Val Loss: 0.5640, Val Acc: 0.8235
+Época 07/50 | Train Loss: 0.0640, Train Acc: 0.9970 | Val Loss: 0.5747, Val Acc: 0.8235
+Época 08/50 | Train Loss: 0.0473, Train Acc: 1.0000 | Val Loss: 0.5715, Val Acc: 0.8235
+Época 09/50 | Train Loss: 0.0392, Train Acc: 1.0000 | Val Loss: 0.5763, Val Acc: 0.8353
+Época 10/50 | Train Loss: 0.0266, Train Acc: 1.0000 | Val Loss: 0.6130, Val Acc: 0.8471
+Época 11/50 | Train Loss: 0.0259, Train Acc: 1.0000 | Val Loss: 0.6170, Val Acc: 0.8353
+Época 12/50 | Train Loss: 0.0222, Train Acc: 1.0000 | Val Loss: 0.6560, Val Acc: 0.8353
+Época 13/50 | Train Loss: 0.0189, Train Acc: 1.0000 | Val Loss: 0.6683, Val Acc: 0.8353
+Época 14/50 | Train Loss: 0.0271, Train Acc: 0.9970 | Val Loss: 0.6715, Val Acc: 0.8588
+Época 15/50 | Train Loss: 0.0160, Train Acc: 1.0000 | Val Loss: 0.7227, Val Acc: 0.8353
+Época 16/50 | Train Loss: 0.0226, Train Acc: 1.0000 | Val Loss: 0.7061, Val Acc: 0.8353
+Early Stopping activado en la época 16 (paciencia=10).
+Tiempo de entrenamiento del Fold 2: 0.40 minutos.
+
+--- Resultados cuantitativos del Fold 2 (mejor época: 6) ---
+Train      -> Loss: 0.0825 | Accuracy: 0.9911
+Validación -> Accuracy: 0.8235 | Precision: 0.8362 | Recall: 0.8235 | F1-macro: 0.8247 | Balanced Acc: 0.8235 | AUC-ROC: 0.9621
+Test       -> Accuracy: 0.7733 | Precision: 0.7746 | Recall: 0.7733 | F1-macro: 0.7631 | Balanced Acc: 0.7733 | AUC-ROC: 0.9491
+
+======================================================================
+[sinDA] FOLD 3/5
+======================================================================
+Época 01/50 | Train Loss: 1.2358, Train Acc: 0.5030 | Val Loss: 1.1069, Val Acc: 0.6353
+Época 02/50 | Train Loss: 0.4838, Train Acc: 0.8639 | Val Loss: 0.9128, Val Acc: 0.6706
+Época 03/50 | Train Loss: 0.2690, Train Acc: 0.9201 | Val Loss: 0.6528, Val Acc: 0.7412
+Época 04/50 | Train Loss: 0.2041, Train Acc: 0.9320 | Val Loss: 0.5513, Val Acc: 0.7412
+Época 05/50 | Train Loss: 0.1325, Train Acc: 0.9704 | Val Loss: 0.5172, Val Acc: 0.7647
+Época 06/50 | Train Loss: 0.0851, Train Acc: 0.9941 | Val Loss: 0.4979, Val Acc: 0.7882
+Época 07/50 | Train Loss: 0.0719, Train Acc: 0.9911 | Val Loss: 0.5194, Val Acc: 0.7882
+Época 08/50 | Train Loss: 0.0522, Train Acc: 1.0000 | Val Loss: 0.5322, Val Acc: 0.7882
+Época 09/50 | Train Loss: 0.0469, Train Acc: 0.9941 | Val Loss: 0.5172, Val Acc: 0.7765
+Época 10/50 | Train Loss: 0.0355, Train Acc: 1.0000 | Val Loss: 0.4784, Val Acc: 0.7765
+Época 11/50 | Train Loss: 0.0389, Train Acc: 0.9970 | Val Loss: 0.4687, Val Acc: 0.7882
+Época 12/50 | Train Loss: 0.0357, Train Acc: 0.9941 | Val Loss: 0.5008, Val Acc: 0.8235
+Época 13/50 | Train Loss: 0.0324, Train Acc: 1.0000 | Val Loss: 0.4943, Val Acc: 0.8235
+Época 14/50 | Train Loss: 0.0258, Train Acc: 1.0000 | Val Loss: 0.5023, Val Acc: 0.8118
+Época 15/50 | Train Loss: 0.0171, Train Acc: 0.9970 | Val Loss: 0.5143, Val Acc: 0.8118
+Época 16/50 | Train Loss: 0.0130, Train Acc: 1.0000 | Val Loss: 0.5249, Val Acc: 0.8000
+Época 17/50 | Train Loss: 0.0188, Train Acc: 1.0000 | Val Loss: 0.5165, Val Acc: 0.8000
+Época 18/50 | Train Loss: 0.0175, Train Acc: 1.0000 | Val Loss: 0.5317, Val Acc: 0.8000
+Época 19/50 | Train Loss: 0.0122, Train Acc: 1.0000 | Val Loss: 0.5402, Val Acc: 0.8118
+Época 20/50 | Train Loss: 0.0106, Train Acc: 1.0000 | Val Loss: 0.5151, Val Acc: 0.8235
+Época 21/50 | Train Loss: 0.0144, Train Acc: 1.0000 | Val Loss: 0.5289, Val Acc: 0.8000
+Early Stopping activado en la época 21 (paciencia=10).
+Tiempo de entrenamiento del Fold 3: 0.54 minutos.
+
+--- Resultados cuantitativos del Fold 3 (mejor época: 11) ---
+Train      -> Loss: 0.0389 | Accuracy: 0.9970
+Validación -> Accuracy: 0.7882 | Precision: 0.7962 | Recall: 0.7882 | F1-macro: 0.7867 | Balanced Acc: 0.7882 | AUC-ROC: 0.9682
+Test       -> Accuracy: 0.7867 | Precision: 0.8005 | Recall: 0.7867 | F1-macro: 0.7844 | Balanced Acc: 0.7867 | AUC-ROC: 0.9420
+
+======================================================================
+[sinDA] FOLD 4/5
+======================================================================
+Época 01/50 | Train Loss: 1.2621, Train Acc: 0.4838 | Val Loss: 1.0578, Val Acc: 0.6071
+Época 02/50 | Train Loss: 0.4905, Train Acc: 0.8584 | Val Loss: 0.6696, Val Acc: 0.7381
+Época 03/50 | Train Loss: 0.3126, Train Acc: 0.9086 | Val Loss: 0.5867, Val Acc: 0.7857
+Época 04/50 | Train Loss: 0.2369, Train Acc: 0.9351 | Val Loss: 0.4788, Val Acc: 0.8214
+Época 05/50 | Train Loss: 0.1822, Train Acc: 0.9499 | Val Loss: 0.4319, Val Acc: 0.8452
+Época 06/50 | Train Loss: 0.0974, Train Acc: 0.9823 | Val Loss: 0.4118, Val Acc: 0.8690
+Época 07/50 | Train Loss: 0.0807, Train Acc: 0.9971 | Val Loss: 0.4223, Val Acc: 0.8810
+Época 08/50 | Train Loss: 0.0715, Train Acc: 0.9941 | Val Loss: 0.4024, Val Acc: 0.8810
+Época 09/50 | Train Loss: 0.0598, Train Acc: 0.9941 | Val Loss: 0.4057, Val Acc: 0.8690
+Época 10/50 | Train Loss: 0.0372, Train Acc: 1.0000 | Val Loss: 0.4270, Val Acc: 0.8929
+Época 11/50 | Train Loss: 0.0358, Train Acc: 1.0000 | Val Loss: 0.4178, Val Acc: 0.9048
+Época 12/50 | Train Loss: 0.0379, Train Acc: 0.9971 | Val Loss: 0.4105, Val Acc: 0.8929
+Época 13/50 | Train Loss: 0.0227, Train Acc: 1.0000 | Val Loss: 0.3865, Val Acc: 0.8810
+Época 14/50 | Train Loss: 0.0301, Train Acc: 0.9971 | Val Loss: 0.3825, Val Acc: 0.8690
+Época 15/50 | Train Loss: 0.0230, Train Acc: 1.0000 | Val Loss: 0.4163, Val Acc: 0.8810
+Época 16/50 | Train Loss: 0.0165, Train Acc: 1.0000 | Val Loss: 0.4131, Val Acc: 0.8571
+Época 17/50 | Train Loss: 0.0160, Train Acc: 1.0000 | Val Loss: 0.3987, Val Acc: 0.8571
+Época 18/50 | Train Loss: 0.0167, Train Acc: 1.0000 | Val Loss: 0.3847, Val Acc: 0.8571
+Época 19/50 | Train Loss: 0.0093, Train Acc: 1.0000 | Val Loss: 0.3826, Val Acc: 0.8452
+Época 20/50 | Train Loss: 0.0141, Train Acc: 1.0000 | Val Loss: 0.3853, Val Acc: 0.8690
+Época 21/50 | Train Loss: 0.0132, Train Acc: 1.0000 | Val Loss: 0.4093, Val Acc: 0.8571
+Época 22/50 | Train Loss: 0.0079, Train Acc: 1.0000 | Val Loss: 0.4364, Val Acc: 0.8571
+Época 23/50 | Train Loss: 0.0151, Train Acc: 0.9971 | Val Loss: 0.4465, Val Acc: 0.8452
+Época 24/50 | Train Loss: 0.0090, Train Acc: 1.0000 | Val Loss: 0.4249, Val Acc: 0.8571
+Early Stopping activado en la época 24 (paciencia=10).
+Tiempo de entrenamiento del Fold 4: 0.60 minutos.
+
+--- Resultados cuantitativos del Fold 4 (mejor época: 14) ---
+Train      -> Loss: 0.0301 | Accuracy: 0.9971
+Validación -> Accuracy: 0.8690 | Precision: 0.8737 | Recall: 0.8699 | F1-macro: 0.8711 | Balanced Acc: 0.8699 | AUC-ROC: 0.9798
+Test       -> Accuracy: 0.7733 | Precision: 0.7832 | Recall: 0.7733 | F1-macro: 0.7719 | Balanced Acc: 0.7733 | AUC-ROC: 0.9587
+
+======================================================================
+[sinDA] FOLD 5/5
+======================================================================
+Época 01/50 | Train Loss: 1.1541, Train Acc: 0.5723 | Val Loss: 1.1096, Val Acc: 0.5238
+Época 02/50 | Train Loss: 0.4780, Train Acc: 0.8466 | Val Loss: 0.7781, Val Acc: 0.7262
+Época 03/50 | Train Loss: 0.2779, Train Acc: 0.9115 | Val Loss: 0.5242, Val Acc: 0.8095
+Época 04/50 | Train Loss: 0.2019, Train Acc: 0.9469 | Val Loss: 0.4697, Val Acc: 0.8452
+Época 05/50 | Train Loss: 0.1314, Train Acc: 0.9735 | Val Loss: 0.4753, Val Acc: 0.8571
+Época 06/50 | Train Loss: 0.0946, Train Acc: 0.9823 | Val Loss: 0.4611, Val Acc: 0.8929
+Época 07/50 | Train Loss: 0.0770, Train Acc: 0.9882 | Val Loss: 0.4067, Val Acc: 0.8929
+Época 08/50 | Train Loss: 0.0735, Train Acc: 0.9912 | Val Loss: 0.3859, Val Acc: 0.8690
+Época 09/50 | Train Loss: 0.0415, Train Acc: 1.0000 | Val Loss: 0.4004, Val Acc: 0.8690
+Época 10/50 | Train Loss: 0.0302, Train Acc: 0.9971 | Val Loss: 0.4057, Val Acc: 0.8690
+Época 11/50 | Train Loss: 0.0301, Train Acc: 1.0000 | Val Loss: 0.4309, Val Acc: 0.8929
+Época 12/50 | Train Loss: 0.0283, Train Acc: 1.0000 | Val Loss: 0.4173, Val Acc: 0.8810
+Época 13/50 | Train Loss: 0.0295, Train Acc: 0.9971 | Val Loss: 0.4459, Val Acc: 0.8690
+Época 14/50 | Train Loss: 0.0221, Train Acc: 0.9971 | Val Loss: 0.4855, Val Acc: 0.8810
+Época 15/50 | Train Loss: 0.0203, Train Acc: 0.9971 | Val Loss: 0.4735, Val Acc: 0.8810
+Época 16/50 | Train Loss: 0.0161, Train Acc: 1.0000 | Val Loss: 0.4482, Val Acc: 0.8690
+Época 17/50 | Train Loss: 0.0211, Train Acc: 1.0000 | Val Loss: 0.4425, Val Acc: 0.8810
+Época 18/50 | Train Loss: 0.0137, Train Acc: 1.0000 | Val Loss: 0.4767, Val Acc: 0.8690
+Early Stopping activado en la época 18 (paciencia=10).
+Tiempo de entrenamiento del Fold 5: 0.48 minutos.
+
+--- Resultados cuantitativos del Fold 5 (mejor época: 8) ---
+Train      -> Loss: 0.0735 | Accuracy: 0.9912
+Validación -> Accuracy: 0.8690 | Precision: 0.8762 | Recall: 0.8706 | F1-macro: 0.8712 | Balanced Acc: 0.8706 | AUC-ROC: 0.9789
+Test       -> Accuracy: 0.7867 | Precision: 0.8027 | Recall: 0.7867 | F1-macro: 0.7861 | Balanced Acc: 0.7867 | AUC-ROC: 0.9524
+
+-- [sinDA] Validación (media entre los 5 folds) --
+accuracy            : 0.8394 ± 0.0306
+precision_macro     : 0.8450 ± 0.0292
+recall_macro        : 0.8399 ± 0.0311
+f1_macro            : 0.8394 ± 0.0317
+balanced_accuracy   : 0.8399 ± 0.0311
+auc_roc_ovr         : 0.9717 ± 0.0067
+
+-- [sinDA] Test (referencia, media de los 5 modelos) --
+accuracy            : 0.7813 ± 0.0065
+precision_macro     : 0.7944 ± 0.0134
+recall_macro        : 0.7813 ± 0.0065
+f1_macro            : 0.7776 ± 0.0088
+balanced_accuracy   : 0.7813 ± 0.0065
+auc_roc_ovr         : 0.9481 ± 0.0072
+
+--- [sinDA] Reentrenamiento del modelo final sobre todo train+val ---
+Épocas óptimas por fold: [7, 6, 11, 14, 8] -> elegidas para el modelo final: 9
+[sinDA | Modelo final] Época 01/9 | Train Loss: 1.1561 | Train Acc: 0.5532
+[sinDA | Modelo final] Época 02/9 | Train Loss: 0.4736 | Train Acc: 0.8534
+[sinDA | Modelo final] Época 03/9 | Train Loss: 0.3031 | Train Acc: 0.8936
+[sinDA | Modelo final] Época 04/9 | Train Loss: 0.1945 | Train Acc: 0.9480
+[sinDA | Modelo final] Época 05/9 | Train Loss: 0.1159 | Train Acc: 0.9764
+[sinDA | Modelo final] Época 06/9 | Train Loss: 0.0965 | Train Acc: 0.9858
+[sinDA | Modelo final] Época 07/9 | Train Loss: 0.0579 | Train Acc: 0.9976
+[sinDA | Modelo final] Época 08/9 | Train Loss: 0.0519 | Train Acc: 1.0000
+[sinDA | Modelo final] Época 09/9 | Train Loss: 0.0398 | Train Acc: 0.9953
+
+--- RESULTADO FINAL [sinDA] - MODELO ÚNICO EVALUADO EN TEST ---
+accuracy            : 0.7733
+precision_macro     : 0.7894
+recall_macro        : 0.7733
+f1_macro            : 0.7706
+balanced_accuracy   : 0.7733
+auc_roc_ovr         : 0.9551
+
+--- [sinDA] Métricas por clase - Test ---
+Subtipo          Precision     Recall   F1-score    AUC-ROC  Nº imágenes
+Clear_Cell          0.7778     0.9333     0.8485     0.9800           15
+Endometri           1.0000     0.8000     0.8889     0.9856           15
+Mucinous            0.8000     0.5333     0.6400     0.9133           15
+Non_Cancerous       0.6471     0.7333     0.6875     0.9578           15
+Serous              0.7222     0.8667     0.7879     0.9389           15
+
+######################################################################
+# EXPERIMENTO: conDA
+######################################################################
+
+--- [conDA] Búsqueda de hiperparámetros con Optuna (10 trials) ---
+
+[conDA | Optuna] Trial 0 — probando: {'lr': 0.0018820965270133785, 'weight_decay': 0.006726922210115865, 'batch_size': 64, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 0 -> F1-macro medio (validación): 0.8242
+
+[conDA | Optuna] Trial 1 — probando: {'lr': 0.0010745214692188343, 'weight_decay': 0.00017061598767282175, 'batch_size': 16, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 1 -> F1-macro medio (validación): 0.8177
+
+[conDA | Optuna] Trial 2 — probando: {'lr': 1.9127978409723366e-05, 'weight_decay': 1.81647988168276e-05, 'batch_size': 64, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 2 -> F1-macro medio (validación): 0.7557
+
+[conDA | Optuna] Trial 3 — probando: {'lr': 0.00015333163238720262, 'weight_decay': 1.3236999039924705e-06, 'batch_size': 32, 'optimizer_name': 'adamw'}
+[conDA | Optuna] Trial 3 -> F1-macro medio (validación): 0.8242
+
+[conDA | Optuna] Trial 4 — probando: {'lr': 1.626171213935268e-05, 'weight_decay': 0.0004746483705025958, 'batch_size': 64, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 4 -> F1-macro medio (validación): 0.7444
+
+[conDA | Optuna] Trial 5 — probando: {'lr': 5.8015772484195276e-05, 'weight_decay': 6.531888390103201e-05, 'batch_size': 64, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 5 -> F1-macro medio (validación): 0.8109
+
+[conDA | Optuna] Trial 6 — probando: {'lr': 0.00011523996138540663, 'weight_decay': 3.3189163549990473e-06, 'batch_size': 64, 'optimizer_name': 'sgd'}
+[conDA | Optuna] Trial 6 -> F1-macro medio (validación): 0.7426
+
+[conDA | Optuna] Trial 7 — probando: {'lr': 1.1512519491008942e-05, 'weight_decay': 7.245281418185964e-06, 'batch_size': 16, 'optimizer_name': 'sgd'}
+[conDA | Optuna] Trial 7 -> F1-macro medio (validación): 0.5470
+
+[conDA | Optuna] Trial 8 — probando: {'lr': 0.00039162662452972596, 'weight_decay': 0.008729737562840484, 'batch_size': 16, 'optimizer_name': 'adam'}
+[conDA | Optuna] Trial 8 -> F1-macro medio (validación): 0.8421
+
+[conDA | Optuna] Trial 9 — probando: {'lr': 1.0445074503523636e-05, 'weight_decay': 2.678875942692751e-06, 'batch_size': 64, 'optimizer_name': 'adamw'}
+[conDA | Optuna] Trial 9 -> F1-macro medio (validación): 0.6829
+
+[conDA] Mejores hiperparámetros: {'lr': 0.00039162662452972596, 'weight_decay': 0.008729737562840484, 'batch_size': 16, 'optimizer_name': 'adam'}
+[conDA] Mejor F1-macro medio (validación, 5-fold): 0.8421
+
+--- [conDA] Ejecución final del 5-Fold CV ---
+
+======================================================================
+[conDA] FOLD 1/5
+======================================================================
+Época 01/50 | Train Loss: 1.2961, Train Acc: 0.5178 | Val Loss: 0.9223, Val Acc: 0.7059
+Época 02/50 | Train Loss: 0.7912, Train Acc: 0.7219 | Val Loss: 0.7761, Val Acc: 0.7176
+Época 03/50 | Train Loss: 0.5954, Train Acc: 0.8225 | Val Loss: 0.6321, Val Acc: 0.7529
+Época 04/50 | Train Loss: 0.5345, Train Acc: 0.8166 | Val Loss: 0.6058, Val Acc: 0.7529
+Época 05/50 | Train Loss: 0.5011, Train Acc: 0.8550 | Val Loss: 0.5728, Val Acc: 0.7765
+Época 06/50 | Train Loss: 0.4581, Train Acc: 0.8402 | Val Loss: 0.5407, Val Acc: 0.7765
+Época 07/50 | Train Loss: 0.4086, Train Acc: 0.8580 | Val Loss: 0.5510, Val Acc: 0.8235
+Época 08/50 | Train Loss: 0.4106, Train Acc: 0.8550 | Val Loss: 0.5730, Val Acc: 0.7765
+Época 09/50 | Train Loss: 0.3641, Train Acc: 0.8846 | Val Loss: 0.5118, Val Acc: 0.7882
+Época 10/50 | Train Loss: 0.2815, Train Acc: 0.9024 | Val Loss: 0.5066, Val Acc: 0.8118
+Época 11/50 | Train Loss: 0.3271, Train Acc: 0.8846 | Val Loss: 0.6019, Val Acc: 0.8000
+Época 12/50 | Train Loss: 0.3131, Train Acc: 0.9083 | Val Loss: 0.5525, Val Acc: 0.8118
+Época 13/50 | Train Loss: 0.2952, Train Acc: 0.9083 | Val Loss: 0.6690, Val Acc: 0.7882
+Época 14/50 | Train Loss: 0.2545, Train Acc: 0.9231 | Val Loss: 0.5490, Val Acc: 0.8235
+Época 15/50 | Train Loss: 0.2571, Train Acc: 0.9142 | Val Loss: 0.5751, Val Acc: 0.7647
+Época 16/50 | Train Loss: 0.3254, Train Acc: 0.8994 | Val Loss: 0.5241, Val Acc: 0.8000
+Época 17/50 | Train Loss: 0.2545, Train Acc: 0.9172 | Val Loss: 0.6071, Val Acc: 0.8118
+Época 18/50 | Train Loss: 0.2461, Train Acc: 0.9290 | Val Loss: 0.6534, Val Acc: 0.8118
+Época 19/50 | Train Loss: 0.2983, Train Acc: 0.8817 | Val Loss: 0.6211, Val Acc: 0.7882
+Época 20/50 | Train Loss: 0.2096, Train Acc: 0.9379 | Val Loss: 0.6414, Val Acc: 0.7647
+Early Stopping activado en la época 20 (paciencia=10).
+Tiempo de entrenamiento del Fold 1: 0.59 minutos.
+
+--- Resultados cuantitativos del Fold 1 (mejor época: 10) ---
+Train      -> Loss: 0.2815 | Accuracy: 0.9024
+Validación -> Accuracy: 0.8118 | Precision: 0.8453 | Recall: 0.8118 | F1-macro: 0.8130 | Balanced Acc: 0.8118 | AUC-ROC: 0.9711
+Test       -> Accuracy: 0.7600 | Precision: 0.7853 | Recall: 0.7600 | F1-macro: 0.7621 | Balanced Acc: 0.7600 | AUC-ROC: 0.9509
+
+======================================================================
+[conDA] FOLD 2/5
+======================================================================
+Época 01/50 | Train Loss: 1.3315, Train Acc: 0.4763 | Val Loss: 0.9115, Val Acc: 0.7294
+Época 02/50 | Train Loss: 0.8415, Train Acc: 0.7160 | Val Loss: 0.6618, Val Acc: 0.7647
+Época 03/50 | Train Loss: 0.6114, Train Acc: 0.8225 | Val Loss: 0.5782, Val Acc: 0.8235
+Época 04/50 | Train Loss: 0.5468, Train Acc: 0.8107 | Val Loss: 0.5315, Val Acc: 0.8353
+Época 05/50 | Train Loss: 0.5590, Train Acc: 0.8166 | Val Loss: 0.5183, Val Acc: 0.8000
+Época 06/50 | Train Loss: 0.4670, Train Acc: 0.8402 | Val Loss: 0.5242, Val Acc: 0.8471
+Época 07/50 | Train Loss: 0.4238, Train Acc: 0.8521 | Val Loss: 0.4940, Val Acc: 0.8471
+Época 08/50 | Train Loss: 0.3943, Train Acc: 0.8846 | Val Loss: 0.4995, Val Acc: 0.8706
+Época 09/50 | Train Loss: 0.4249, Train Acc: 0.8432 | Val Loss: 0.5494, Val Acc: 0.8235
+Época 10/50 | Train Loss: 0.4062, Train Acc: 0.8550 | Val Loss: 0.5448, Val Acc: 0.8588
+Época 11/50 | Train Loss: 0.3661, Train Acc: 0.8698 | Val Loss: 0.4976, Val Acc: 0.8353
+Época 12/50 | Train Loss: 0.3275, Train Acc: 0.8846 | Val Loss: 0.5103, Val Acc: 0.8588
+Época 13/50 | Train Loss: 0.3041, Train Acc: 0.9112 | Val Loss: 0.5203, Val Acc: 0.8471
+Época 14/50 | Train Loss: 0.3265, Train Acc: 0.8876 | Val Loss: 0.5030, Val Acc: 0.8471
+Época 15/50 | Train Loss: 0.2841, Train Acc: 0.9172 | Val Loss: 0.4839, Val Acc: 0.8706
+Época 16/50 | Train Loss: 0.3270, Train Acc: 0.8757 | Val Loss: 0.4638, Val Acc: 0.8706
+Época 17/50 | Train Loss: 0.3043, Train Acc: 0.9024 | Val Loss: 0.4823, Val Acc: 0.8588
+Época 18/50 | Train Loss: 0.2930, Train Acc: 0.9024 | Val Loss: 0.4529, Val Acc: 0.8588
+Época 19/50 | Train Loss: 0.2711, Train Acc: 0.9231 | Val Loss: 0.4981, Val Acc: 0.8471
+Época 20/50 | Train Loss: 0.2458, Train Acc: 0.9231 | Val Loss: 0.4805, Val Acc: 0.8706
+Época 21/50 | Train Loss: 0.2607, Train Acc: 0.9112 | Val Loss: 0.5025, Val Acc: 0.8471
+Época 22/50 | Train Loss: 0.2212, Train Acc: 0.9349 | Val Loss: 0.4736, Val Acc: 0.8588
+Época 23/50 | Train Loss: 0.1888, Train Acc: 0.9467 | Val Loss: 0.5018, Val Acc: 0.8588
+Época 24/50 | Train Loss: 0.2313, Train Acc: 0.9172 | Val Loss: 0.5089, Val Acc: 0.8471
+Época 25/50 | Train Loss: 0.2435, Train Acc: 0.9142 | Val Loss: 0.5411, Val Acc: 0.8471
+Época 26/50 | Train Loss: 0.2097, Train Acc: 0.9408 | Val Loss: 0.5920, Val Acc: 0.8824
+Época 27/50 | Train Loss: 0.2177, Train Acc: 0.9438 | Val Loss: 0.4461, Val Acc: 0.8588
+Época 28/50 | Train Loss: 0.2215, Train Acc: 0.9260 | Val Loss: 0.5254, Val Acc: 0.8471
+Época 29/50 | Train Loss: 0.3089, Train Acc: 0.8994 | Val Loss: 0.5236, Val Acc: 0.8706
+Época 30/50 | Train Loss: 0.2105, Train Acc: 0.9408 | Val Loss: 0.5412, Val Acc: 0.8235
+Época 31/50 | Train Loss: 0.2031, Train Acc: 0.9290 | Val Loss: 0.5001, Val Acc: 0.8588
+Época 32/50 | Train Loss: 0.2533, Train Acc: 0.9172 | Val Loss: 0.5189, Val Acc: 0.8353
+Época 33/50 | Train Loss: 0.2345, Train Acc: 0.9024 | Val Loss: 0.5374, Val Acc: 0.8471
+Época 34/50 | Train Loss: 0.2161, Train Acc: 0.9467 | Val Loss: 0.6222, Val Acc: 0.8353
+Época 35/50 | Train Loss: 0.2655, Train Acc: 0.9053 | Val Loss: 0.5664, Val Acc: 0.8235
+Época 36/50 | Train Loss: 0.2603, Train Acc: 0.9083 | Val Loss: 0.4896, Val Acc: 0.8824
+Época 37/50 | Train Loss: 0.2539, Train Acc: 0.9053 | Val Loss: 0.5168, Val Acc: 0.8588
+Early Stopping activado en la época 37 (paciencia=10).
+Tiempo de entrenamiento del Fold 2: 1.06 minutos.
+
+--- Resultados cuantitativos del Fold 2 (mejor época: 27) ---
+Train      -> Loss: 0.2177 | Accuracy: 0.9438
+Validación -> Accuracy: 0.8588 | Precision: 0.8620 | Recall: 0.8588 | F1-macro: 0.8559 | Balanced Acc: 0.8588 | AUC-ROC: 0.9734
+Test       -> Accuracy: 0.7600 | Precision: 0.7690 | Recall: 0.7600 | F1-macro: 0.7613 | Balanced Acc: 0.7600 | AUC-ROC: 0.9349
+
+======================================================================
+[conDA] FOLD 3/5
+======================================================================
+Época 01/50 | Train Loss: 1.2897, Train Acc: 0.4822 | Val Loss: 0.9978, Val Acc: 0.5765
+Época 02/50 | Train Loss: 0.7756, Train Acc: 0.7396 | Val Loss: 0.7771, Val Acc: 0.7412
+Época 03/50 | Train Loss: 0.6262, Train Acc: 0.7870 | Val Loss: 0.7240, Val Acc: 0.7294
+Época 04/50 | Train Loss: 0.5646, Train Acc: 0.8077 | Val Loss: 0.6756, Val Acc: 0.7647
+Época 05/50 | Train Loss: 0.5156, Train Acc: 0.8462 | Val Loss: 0.6507, Val Acc: 0.7765
+Época 06/50 | Train Loss: 0.3878, Train Acc: 0.9053 | Val Loss: 0.6514, Val Acc: 0.7765
+Época 07/50 | Train Loss: 0.3714, Train Acc: 0.8905 | Val Loss: 0.6756, Val Acc: 0.7647
+Época 08/50 | Train Loss: 0.3910, Train Acc: 0.8787 | Val Loss: 0.6639, Val Acc: 0.7412
+Época 09/50 | Train Loss: 0.3448, Train Acc: 0.8728 | Val Loss: 0.6368, Val Acc: 0.7647
+Época 10/50 | Train Loss: 0.3631, Train Acc: 0.8757 | Val Loss: 0.6696, Val Acc: 0.7882
+Época 11/50 | Train Loss: 0.3155, Train Acc: 0.8728 | Val Loss: 0.6558, Val Acc: 0.8118
+Época 12/50 | Train Loss: 0.3286, Train Acc: 0.8757 | Val Loss: 0.6302, Val Acc: 0.7647
+Época 13/50 | Train Loss: 0.3056, Train Acc: 0.8935 | Val Loss: 0.6451, Val Acc: 0.7647
+Época 14/50 | Train Loss: 0.2768, Train Acc: 0.9112 | Val Loss: 0.6639, Val Acc: 0.7529
+Época 15/50 | Train Loss: 0.2473, Train Acc: 0.9201 | Val Loss: 0.6467, Val Acc: 0.7647
+Época 16/50 | Train Loss: 0.2827, Train Acc: 0.9083 | Val Loss: 0.6424, Val Acc: 0.7647
+Época 17/50 | Train Loss: 0.2674, Train Acc: 0.9142 | Val Loss: 0.6490, Val Acc: 0.8000
+Época 18/50 | Train Loss: 0.2565, Train Acc: 0.9112 | Val Loss: 0.7309, Val Acc: 0.7647
+Época 19/50 | Train Loss: 0.2702, Train Acc: 0.9172 | Val Loss: 0.6768, Val Acc: 0.7765
+Época 20/50 | Train Loss: 0.2898, Train Acc: 0.8964 | Val Loss: 0.7766, Val Acc: 0.7412
+Época 21/50 | Train Loss: 0.1995, Train Acc: 0.9349 | Val Loss: 0.6791, Val Acc: 0.7882
+Época 22/50 | Train Loss: 0.2479, Train Acc: 0.9172 | Val Loss: 0.6580, Val Acc: 0.7529
+Early Stopping activado en la época 22 (paciencia=10).
+Tiempo de entrenamiento del Fold 3: 0.59 minutos.
+
+--- Resultados cuantitativos del Fold 3 (mejor época: 12) ---
+Train      -> Loss: 0.3286 | Accuracy: 0.8757
+Validación -> Accuracy: 0.7647 | Precision: 0.7650 | Recall: 0.7647 | F1-macro: 0.7637 | Balanced Acc: 0.7647 | AUC-ROC: 0.9498
+Test       -> Accuracy: 0.7200 | Precision: 0.7124 | Recall: 0.7200 | F1-macro: 0.7102 | Balanced Acc: 0.7200 | AUC-ROC: 0.9280
+
+======================================================================
+[conDA] FOLD 4/5
+======================================================================
+Época 01/50 | Train Loss: 1.3436, Train Acc: 0.4602 | Val Loss: 0.9375, Val Acc: 0.6786
+Época 02/50 | Train Loss: 0.7826, Train Acc: 0.7286 | Val Loss: 0.6369, Val Acc: 0.8333
+Época 03/50 | Train Loss: 0.6412, Train Acc: 0.7758 | Val Loss: 0.5592, Val Acc: 0.8214
+Época 04/50 | Train Loss: 0.5495, Train Acc: 0.8024 | Val Loss: 0.5033, Val Acc: 0.8452
+Época 05/50 | Train Loss: 0.4846, Train Acc: 0.8437 | Val Loss: 0.4591, Val Acc: 0.8452
+Época 06/50 | Train Loss: 0.4993, Train Acc: 0.8643 | Val Loss: 0.4435, Val Acc: 0.8214
+Época 07/50 | Train Loss: 0.4269, Train Acc: 0.8378 | Val Loss: 0.5049, Val Acc: 0.8214
+Época 08/50 | Train Loss: 0.3841, Train Acc: 0.8702 | Val Loss: 0.5221, Val Acc: 0.8095
+Época 09/50 | Train Loss: 0.3587, Train Acc: 0.8909 | Val Loss: 0.4526, Val Acc: 0.8452
+Época 10/50 | Train Loss: 0.3546, Train Acc: 0.8820 | Val Loss: 0.4446, Val Acc: 0.8690
+Época 11/50 | Train Loss: 0.3405, Train Acc: 0.8791 | Val Loss: 0.4795, Val Acc: 0.7976
+Época 12/50 | Train Loss: 0.3112, Train Acc: 0.9027 | Val Loss: 0.4459, Val Acc: 0.8452
+Época 13/50 | Train Loss: 0.2892, Train Acc: 0.9086 | Val Loss: 0.4041, Val Acc: 0.8452
+Época 14/50 | Train Loss: 0.2949, Train Acc: 0.9027 | Val Loss: 0.4456, Val Acc: 0.8452
+Época 15/50 | Train Loss: 0.2660, Train Acc: 0.9145 | Val Loss: 0.4603, Val Acc: 0.8571
+Época 16/50 | Train Loss: 0.2953, Train Acc: 0.8997 | Val Loss: 0.4190, Val Acc: 0.8571
+Época 17/50 | Train Loss: 0.2763, Train Acc: 0.9115 | Val Loss: 0.4351, Val Acc: 0.8333
+Época 18/50 | Train Loss: 0.2730, Train Acc: 0.9027 | Val Loss: 0.4030, Val Acc: 0.8571
+Época 19/50 | Train Loss: 0.2386, Train Acc: 0.9233 | Val Loss: 0.4332, Val Acc: 0.8095
+Época 20/50 | Train Loss: 0.2322, Train Acc: 0.9174 | Val Loss: 0.3959, Val Acc: 0.8452
+Época 21/50 | Train Loss: 0.2045, Train Acc: 0.9410 | Val Loss: 0.4097, Val Acc: 0.8333
+Época 22/50 | Train Loss: 0.2186, Train Acc: 0.9292 | Val Loss: 0.4272, Val Acc: 0.8214
+Época 23/50 | Train Loss: 0.2173, Train Acc: 0.9174 | Val Loss: 0.4557, Val Acc: 0.8214
+Época 24/50 | Train Loss: 0.1927, Train Acc: 0.9499 | Val Loss: 0.4866, Val Acc: 0.8333
+Época 25/50 | Train Loss: 0.2167, Train Acc: 0.9233 | Val Loss: 0.5032, Val Acc: 0.8333
+Época 26/50 | Train Loss: 0.1994, Train Acc: 0.9351 | Val Loss: 0.4134, Val Acc: 0.8214
+Época 27/50 | Train Loss: 0.1706, Train Acc: 0.9381 | Val Loss: 0.4112, Val Acc: 0.8333
+Época 28/50 | Train Loss: 0.1709, Train Acc: 0.9440 | Val Loss: 0.4450, Val Acc: 0.8333
+Época 29/50 | Train Loss: 0.1917, Train Acc: 0.9263 | Val Loss: 0.4362, Val Acc: 0.8690
+Época 30/50 | Train Loss: 0.1863, Train Acc: 0.9410 | Val Loss: 0.5600, Val Acc: 0.8214
+Early Stopping activado en la época 30 (paciencia=10).
+Tiempo de entrenamiento del Fold 4: 0.82 minutos.
+
+--- Resultados cuantitativos del Fold 4 (mejor época: 20) ---
+Train      -> Loss: 0.2322 | Accuracy: 0.9174
+Validación -> Accuracy: 0.8452 | Precision: 0.8496 | Recall: 0.8471 | F1-macro: 0.8480 | Balanced Acc: 0.8471 | AUC-ROC: 0.9789
+Test       -> Accuracy: 0.8000 | Precision: 0.8020 | Recall: 0.8000 | F1-macro: 0.7994 | Balanced Acc: 0.8000 | AUC-ROC: 0.9507
+
+======================================================================
+[conDA] FOLD 5/5
+======================================================================
+Época 01/50 | Train Loss: 1.2869, Train Acc: 0.5221 | Val Loss: 0.9558, Val Acc: 0.6548
+Época 02/50 | Train Loss: 0.7762, Train Acc: 0.7670 | Val Loss: 0.7182, Val Acc: 0.7976
+Época 03/50 | Train Loss: 0.6494, Train Acc: 0.7935 | Val Loss: 0.6091, Val Acc: 0.7976
+Época 04/50 | Train Loss: 0.5591, Train Acc: 0.8230 | Val Loss: 0.5752, Val Acc: 0.7738
+Época 05/50 | Train Loss: 0.5202, Train Acc: 0.8260 | Val Loss: 0.5706, Val Acc: 0.8095
+Época 06/50 | Train Loss: 0.5212, Train Acc: 0.8201 | Val Loss: 0.5449, Val Acc: 0.7857
+Época 07/50 | Train Loss: 0.3957, Train Acc: 0.8909 | Val Loss: 0.5420, Val Acc: 0.7976
+Época 08/50 | Train Loss: 0.4177, Train Acc: 0.8614 | Val Loss: 0.5175, Val Acc: 0.7976
+Época 09/50 | Train Loss: 0.4081, Train Acc: 0.8673 | Val Loss: 0.4986, Val Acc: 0.7857
+Época 10/50 | Train Loss: 0.3659, Train Acc: 0.8732 | Val Loss: 0.4940, Val Acc: 0.7976
+Época 11/50 | Train Loss: 0.3637, Train Acc: 0.8761 | Val Loss: 0.4299, Val Acc: 0.8452
+Época 12/50 | Train Loss: 0.3147, Train Acc: 0.9056 | Val Loss: 0.4574, Val Acc: 0.8095
+Época 13/50 | Train Loss: 0.2904, Train Acc: 0.8791 | Val Loss: 0.4831, Val Acc: 0.7857
+Época 14/50 | Train Loss: 0.2699, Train Acc: 0.9027 | Val Loss: 0.4783, Val Acc: 0.7857
+Época 15/50 | Train Loss: 0.2924, Train Acc: 0.8968 | Val Loss: 0.4444, Val Acc: 0.8333
+Época 16/50 | Train Loss: 0.2930, Train Acc: 0.9086 | Val Loss: 0.4893, Val Acc: 0.8214
+Época 17/50 | Train Loss: 0.2777, Train Acc: 0.9086 | Val Loss: 0.4592, Val Acc: 0.7976
+Época 18/50 | Train Loss: 0.2354, Train Acc: 0.9351 | Val Loss: 0.4875, Val Acc: 0.7976
+Época 19/50 | Train Loss: 0.2835, Train Acc: 0.9027 | Val Loss: 0.4617, Val Acc: 0.8690
+Época 20/50 | Train Loss: 0.2431, Train Acc: 0.9086 | Val Loss: 0.4839, Val Acc: 0.8571
+Época 21/50 | Train Loss: 0.2631, Train Acc: 0.9056 | Val Loss: 0.5155, Val Acc: 0.8095
+Early Stopping activado en la época 21 (paciencia=10).
+Tiempo de entrenamiento del Fold 5: 0.57 minutos.
+
+--- Resultados cuantitativos del Fold 5 (mejor época: 11) ---
+Train      -> Loss: 0.3637 | Accuracy: 0.8761
+Validación -> Accuracy: 0.8452 | Precision: 0.8568 | Recall: 0.8463 | F1-macro: 0.8471 | Balanced Acc: 0.8463 | AUC-ROC: 0.9775
+Test       -> Accuracy: 0.8400 | Precision: 0.8440 | Recall: 0.8400 | F1-macro: 0.8372 | Balanced Acc: 0.8400 | AUC-ROC: 0.9542
+
+-- [conDA] Validación (media entre los 5 folds) --
+accuracy            : 0.8252 ± 0.0340
+precision_macro     : 0.8357 ± 0.0358
+recall_macro        : 0.8257 ± 0.0343
+f1_macro            : 0.8256 ± 0.0343
+balanced_accuracy   : 0.8257 ± 0.0343
+auc_roc_ovr         : 0.9701 ± 0.0105
+
+-- [conDA] Test (referencia, media de los 5 modelos) --
+accuracy            : 0.7760 ± 0.0408
+precision_macro     : 0.7826 ± 0.0430
+recall_macro        : 0.7760 ± 0.0408
+f1_macro            : 0.7741 ± 0.0425
+balanced_accuracy   : 0.7760 ± 0.0408
+auc_roc_ovr         : 0.9437 ± 0.0103
+
+--- [conDA] Reentrenamiento del modelo final sobre todo train+val ---
+Épocas óptimas por fold: [10, 27, 12, 20, 11] -> elegidas para el modelo final: 16
+[conDA | Modelo final] Época 01/16 | Train Loss: 1.2247 | Train Acc: 0.5366
+[conDA | Modelo final] Época 02/16 | Train Loss: 0.7447 | Train Acc: 0.7778
+[conDA | Modelo final] Época 03/16 | Train Loss: 0.5712 | Train Acc: 0.8085
+[conDA | Modelo final] Época 04/16 | Train Loss: 0.5710 | Train Acc: 0.8038
+[conDA | Modelo final] Época 05/16 | Train Loss: 0.4818 | Train Acc: 0.8416
+[conDA | Modelo final] Época 06/16 | Train Loss: 0.4288 | Train Acc: 0.8534
+[conDA | Modelo final] Época 07/16 | Train Loss: 0.4186 | Train Acc: 0.8558
+[conDA | Modelo final] Época 08/16 | Train Loss: 0.3340 | Train Acc: 0.9102
+[conDA | Modelo final] Época 09/16 | Train Loss: 0.3670 | Train Acc: 0.8794
+[conDA | Modelo final] Época 10/16 | Train Loss: 0.3916 | Train Acc: 0.8652
+[conDA | Modelo final] Época 11/16 | Train Loss: 0.2980 | Train Acc: 0.9149
+[conDA | Modelo final] Época 12/16 | Train Loss: 0.3212 | Train Acc: 0.8936
+[conDA | Modelo final] Época 13/16 | Train Loss: 0.3140 | Train Acc: 0.8960
+[conDA | Modelo final] Época 14/16 | Train Loss: 0.3033 | Train Acc: 0.9054
+[conDA | Modelo final] Época 15/16 | Train Loss: 0.2631 | Train Acc: 0.9173
+[conDA | Modelo final] Época 16/16 | Train Loss: 0.2650 | Train Acc: 0.9007
+
+--- RESULTADO FINAL [conDA] - MODELO ÚNICO EVALUADO EN TEST ---
+accuracy            : 0.7867
+precision_macro     : 0.7890
+recall_macro        : 0.7867
+f1_macro            : 0.7792
+balanced_accuracy   : 0.7867
+auc_roc_ovr         : 0.9551
+
+--- [conDA] Métricas por clase - Test ---
+Subtipo          Precision     Recall   F1-score    AUC-ROC  Nº imágenes
+Clear_Cell          0.8824     1.0000     0.9375     0.9878           15
+Endometri           0.8824     1.0000     0.9375     0.9967           15
+Mucinous            0.8000     0.5333     0.6400     0.9278           15
+Non_Cancerous       0.6111     0.7333     0.6667     0.9200           15
+Serous              0.7692     0.6667     0.7143     0.9433           15
+
+======================================================================
+PASO 14: COMPARACIÓN FINAL — SIN DATA AUGMENTATION vs. CON DATA AUGMENTATION
+======================================================================
+Métrica                    Sin DA       Con DA
+accuracy                   0.7733       0.7867
+precision_macro            0.7894       0.7890
+recall_macro               0.7733       0.7867
+f1_macro                   0.7706       0.7792
+balanced_accuracy          0.7733       0.7867
+auc_roc_ovr                0.9551       0.9551
+
+Experimento ganador (mejor F1-macro en test): conDA
+Pesos del modelo ganador guardados en "mobilenetv2_final.pth" (raíz, para app.py) y en "resultados/modelos/".
+Resumen numérico completo guardado en: resultados/resumen_resultados.json
+
+======================================================================
+PASO 15: EXPLICABILIDAD CON GRAD-CAM (modelo ganador: conDA)
+======================================================================
+Grad-CAM generado para 10 imágenes de test (hasta 2 por clase).

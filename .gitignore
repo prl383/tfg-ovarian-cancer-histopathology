@@ -1,0 +1,50 @@
+# Pesos entrenados: son grandes (varios superan los 100 MB, el límite que
+# GitHub rechaza directamente) y no aportan nada como texto en el control
+# de versiones. Se excluyen todos salvo el que necesita app.py para
+# funcionar nada más clonar el repositorio.
+*.pth
+!/mobilenetv2_final.pth
+
+# Dataset descargado automáticamente por opendatasets (Kaggle) al ejecutar
+# cualquiera de los scripts de entrenamiento
+dataset/
+ovarian-cancer-and-subtypes-dataset-histopathology/
+
+# PDFs de referencia bibliográfica: no son código
+papers/
+
+# La memoria del TFG y sus documentos de planificación viven en Overleaf
+# y en local respectivamente, no en este repositorio de código
+memoria/
+anteproyecto/
+TFG_buenaspracticas.docx
+
+# TFGs de otros alumnos usados como referencia: no son tuyos para redistribuir
+tfg_ejemplo/
+
+# Ejecuciones antiguas, ya superadas por las carpetas resultados_*
+resultados/
+resultados12Agosto/
+resultados con graficas a escala/
+
+# Copia de seguridad local del código antes de recortar comentarios
+codigo_comentado_extenso.rar
+
+# Script y figura de una comparativa de la memoria (Estado del Arte),
+# ajenos al pipeline de clasificación: el repo se queda solo con el código
+grafico_papers.py
+mobilenetv2_variabilidad.png
+
+# Registro de uso de la app en local (predicciones e imágenes subidas)
+logs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Sistema
+.DS_Store
+Thumbs.db

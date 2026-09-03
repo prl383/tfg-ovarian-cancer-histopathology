@@ -1,0 +1,4 @@
+Guardando también una copia de esta ejecución en: resultados/log_2026-08-09_004354.txt
+Dispositivo utilizado: cuda
+Please provide your Kaggle credentials to download this dataset. Learn more: http://bit.ly/kaggle-creds
+Your Kaggle username: 
