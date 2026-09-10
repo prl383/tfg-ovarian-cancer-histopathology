@@ -179,6 +179,9 @@ assert len(class_names) == NUM_CLASSES, (
     f"Se esperaban {NUM_CLASSES} clases, pero se encontraron {len(class_names)}."
 )
 
+# Etiquetas de clase en castellano para las figuras (mismo orden que class_names)
+CLASES_ES = ["Clear Cell", "Endometrioide", "Mucinoso", "No Canceroso", "Seroso"]
+
 all_labels = np.array(train_dataset_full.targets)
 all_indices = np.arange(len(all_labels))
 
@@ -780,10 +783,14 @@ def ejecutar_experimento_completo(nombre_experimento: str, dataset_entrenamiento
     # Matriz de Confusión sobre TEST
     matriz_confusion = confusion_matrix(y_real_final, y_pred_final)
     fig, ax = plt.subplots(figsize=(7, 6))
-    ConfusionMatrixDisplay(confusion_matrix=matriz_confusion, display_labels=class_names).plot(
+    ConfusionMatrixDisplay(confusion_matrix=matriz_confusion, display_labels=CLASES_ES).plot(
         ax=ax, cmap="Blues", xticks_rotation=45, colorbar=True
     )
-    ax.set_title(f"Matriz de Confusión [{nombre_experimento}] - Test")
+    ax.grid(False)
+    ax.set_xlabel("Etiqueta predicha")
+    ax.set_ylabel("Etiqueta real")
+    _esc = "Con DA" if nombre_experimento == "conDA" else "Sin DA"
+    ax.set_title(f"Matriz de confusión \u2014 Test ({_esc})")
     plt.tight_layout()
     plt.savefig(os.path.join(CARPETA_GRAFICAS, f"matriz_confusion_test_{nombre_experimento}.png"), dpi=150)
     plt.show()
@@ -795,10 +802,14 @@ def ejecutar_experimento_completo(nombre_experimento: str, dataset_entrenamiento
     y_real_train, y_pred_train, _ = obtener_predicciones(modelo_final, dataloader_pool_evaluacion)
     matriz_confusion_train = confusion_matrix(y_real_train, y_pred_train)
     fig, ax = plt.subplots(figsize=(7, 6))
-    ConfusionMatrixDisplay(confusion_matrix=matriz_confusion_train, display_labels=class_names).plot(
+    ConfusionMatrixDisplay(confusion_matrix=matriz_confusion_train, display_labels=CLASES_ES).plot(
         ax=ax, cmap="Oranges", xticks_rotation=45, colorbar=True
     )
-    ax.set_title(f"Matriz de Confusión [{nombre_experimento}] - Train")
+    ax.grid(False)
+    ax.set_xlabel("Etiqueta predicha")
+    ax.set_ylabel("Etiqueta real")
+    _esc = "Con DA" if nombre_experimento == "conDA" else "Sin DA"
+    ax.set_title(f"Matriz de confusión \u2014 Train ({_esc})")
     plt.tight_layout()
     plt.savefig(os.path.join(CARPETA_GRAFICAS, f"matriz_confusion_train_{nombre_experimento}.png"), dpi=150)
     plt.show()
@@ -822,12 +833,13 @@ def ejecutar_experimento_completo(nombre_experimento: str, dataset_entrenamiento
     fig, ax = plt.subplots(figsize=(7, 6))
     for indice_clase, nombre_clase in enumerate(class_names):
         fpr, tpr, _ = roc_curve(y_real_final_binarizado[:, indice_clase], y_proba_final[:, indice_clase])
-        ax.plot(fpr, tpr, label=f"{nombre_clase} (AUC={auc_por_clase[indice_clase]:.3f})")
+        ax.plot(fpr, tpr, linewidth=2.6, label=f"{CLASES_ES[indice_clase]} (AUC={auc_por_clase[indice_clase]:.3f})")
     ax.plot([0, 1], [0, 1], linestyle="--", color="gray", label="Azar (AUC=0.5)")
     ax.set_xlabel("Tasa de Falsos Positivos (FPR)")
     ax.set_ylabel("Tasa de Verdaderos Positivos (TPR)")
-    ax.set_title(f"Curvas ROC por clase [{nombre_experimento}] - Test (One-vs-Rest)")
-    ax.legend(loc="lower right", fontsize=8)
+    ax.set_title(f"Curvas ROC por clase \u2014 Test, One-vs-Rest "
+                 f"({'Con DA' if nombre_experimento == 'conDA' else 'Sin DA'})")
+    ax.legend(loc="lower right", fontsize=12, framealpha=0.95)
     plt.tight_layout()
     plt.savefig(os.path.join(CARPETA_GRAFICAS, f"curvas_roc_{nombre_experimento}.png"), dpi=150)
     plt.show()
@@ -969,7 +981,10 @@ for indice in indices_test:
         indices_por_clase[etiqueta].append(indice)
 indices_gradcam = [indice for lista in indices_por_clase.values() for indice in lista]
 
-fig, ejes = plt.subplots(2, len(indices_gradcam), figsize=(3 * len(indices_gradcam), 6.5))
+GC_COLS = 5
+gc_bloques = -(-len(indices_gradcam) // GC_COLS)  # nº de bloques de 5 (ceil)
+fig, ejes = plt.subplots(2 * gc_bloques, GC_COLS,
+                         figsize=(3 * GC_COLS, 3.4 * gc_bloques), squeeze=False)
 for columna, indice in enumerate(indices_gradcam):
     ruta_imagen, etiqueta_real = val_dataset_full.samples[indice]
     imagen_pil = Image.open(ruta_imagen).convert("RGB")
@@ -982,14 +997,19 @@ for columna, indice in enumerate(indices_gradcam):
     imagen_redimensionada = imagen_pil.resize((IMG_SIZE, IMG_SIZE))
     superpuesta = superponer_gradcam(imagen_redimensionada, mapa_calor)
 
-    ejes[0, columna].imshow(imagen_redimensionada)
-    ejes[0, columna].set_title(f"Real: {class_names[etiqueta_real]}", fontsize=9)
-    ejes[0, columna].axis("off")
+    _fila = 2 * (columna // GC_COLS)
+    _col = columna % GC_COLS
+    ejes[_fila, _col].imshow(imagen_redimensionada)
+    ejes[_fila, _col].set_title(f"Real: {CLASES_ES[etiqueta_real]}", fontsize=9)
+    ejes[_fila, _col].axis("off")
 
-    ejes[1, columna].imshow(superpuesta)
-    ejes[1, columna].set_title(f"Pred: {class_names[indice_predicho]}", fontsize=9)
-    ejes[1, columna].axis("off")
+    ejes[_fila + 1, _col].imshow(superpuesta)
+    ejes[_fila + 1, _col].set_title(f"Pred: {CLASES_ES[indice_predicho]}", fontsize=9)
+    ejes[_fila + 1, _col].axis("off")
 
+for _ax_vacio in ejes.flat:
+    if not _ax_vacio.has_data():
+        _ax_vacio.axis("off")
 fig.suptitle("Grad-CAM: zonas en las que se fija el modelo para decidir", fontsize=13)
 plt.tight_layout()
 plt.savefig(os.path.join(CARPETA_GRAFICAS, "gradcam.png"), dpi=150)
