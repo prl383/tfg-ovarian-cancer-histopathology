@@ -153,12 +153,17 @@ def analizar_imagen(nombre: str, imagen: Image.Image, clase_real: str) -> dict:
 
 
 def mostrar_resultados(imagenes: list):
-    """Muestra una tabla resumen (miniatura, predicción, clase real, confianza) y el desglose por imagen."""
-    resultados = [analizar_imagen(nombre, imagen, clase_real) for nombre, imagen, clase_real in imagenes]
+    """Muestra una tabla resumen (con casilla para quitar, miniatura, predicción, clase real,
+    confianza) y el desglose por imagen."""
+    resultados = [
+        {**analizar_imagen(img["nombre"], img["imagen"], img["clase_real"]), "origen": img["origen"], "id": img["id"]}
+        for img in imagenes
+    ]
 
     st.subheader(f"Resultados ({len(resultados)} imagen{'es' if len(resultados) != 1 else ''})")
     tabla = pd.DataFrame([
         {
+            "Quitar": False,
             "Imagen": miniatura_data_uri(r["imagen"]),
             "Archivo": r["nombre"],
             "Predicción": r["clase_predicha"],
@@ -168,15 +173,34 @@ def mostrar_resultados(imagenes: list):
         }
         for r in resultados
     ])
-    st.dataframe(
+    tabla_editada = st.data_editor(
         tabla,
         column_config={
+            "Quitar": st.column_config.CheckboxColumn("Quitar", help="Márcala para quitar esta imagen de la lista"),
             "Imagen": st.column_config.ImageColumn("Imagen"),
             "Confianza": st.column_config.ProgressColumn("Confianza", format="%.1f%%", min_value=0, max_value=100),
         },
+        disabled=["Imagen", "Archivo", "Predicción", "Clase Real", "¿Acierto?", "Confianza"],
         hide_index=True,
         use_container_width=True,
+        key="tabla_resultados",
     )
+
+    # Marcar "Quitar" solo selecciona la fila; no se elimina nada hasta pulsar
+    # el botón, para poder marcar varias antes de confirmar.
+    marcadas_para_quitar = [
+        resultado for marcar, resultado in zip(tabla_editada["Quitar"], resultados) if marcar
+    ]
+    if st.button(
+        f"🗑️ Eliminar seleccionadas ({len(marcadas_para_quitar)})",
+        disabled=not marcadas_para_quitar,
+    ):
+        for resultado in marcadas_para_quitar:
+            if resultado["origen"] == "ejemplo":
+                st.session_state.ejemplos_seleccionados.pop(resultado["id"], None)
+            else:
+                st.session_state.archivos_subidos_excluidos.add(resultado["id"])
+        st.rerun()
 
     st.caption("Desglose detallado por imagen:")
     for resultado in resultados:
@@ -232,19 +256,39 @@ archivos_subidos = st.file_uploader(
     "Sube una o varias imágenes (JPG o PNG)", type=["jpg", "jpeg", "png"], accept_multiple_files=True
 )
 
+# Nombres de archivos subidos que el usuario ha quitado desde la tabla de
+# resultados (ver mostrar_resultados). El propio widget de subida no permite
+# quitar un archivo por código, así que se filtra aquí en cada ejecución.
+if "archivos_subidos_excluidos" not in st.session_state:
+    st.session_state.archivos_subidos_excluidos = set()
+
 imagenes_a_analizar = []
 if archivos_subidos:
     st.caption("Si conoces el subtipo real de cada imagen, indícalo para comparar con la predicción:")
     for archivo in archivos_subidos:
+        if archivo.name in st.session_state.archivos_subidos_excluidos:
+            continue
         clase_real = st.selectbox(
             f"Clase real — {archivo.name}",
             OPCIONES_CLASE_REAL,
             index=len(OPCIONES_CLASE_REAL) - 1,  # "No lo sé" por defecto
             key=f"clase_real_{archivo.name}",
         )
-        imagenes_a_analizar.append((archivo.name, Image.open(archivo), clase_real))
+        imagenes_a_analizar.append({
+            "nombre": archivo.name,
+            "imagen": Image.open(archivo),
+            "clase_real": clase_real,
+            "origen": "subida",
+            "id": archivo.name,
+        })
 
-# Galería opcional de ejemplos (solo si existe la carpeta "ejemplos/")
+# Galería opcional de ejemplos (solo si existe la carpeta "ejemplos/"). Las
+# selecciones se guardan en session_state: al pulsar un botón, Streamlit
+# vuelve a ejecutar todo el script desde el principio, así que sin esto solo
+# sobrevivía la del último clic y las anteriores se perdían.
+if "ejemplos_seleccionados" not in st.session_state:
+    st.session_state.ejemplos_seleccionados = {}  # ruta (str) -> clase elegida
+
 if CARPETA_EJEMPLOS.is_dir():
     with st.expander("O prueba con una imagen de ejemplo"):
         clase_elegida = st.selectbox("Subtipo de ejemplo", CLASS_NAMES)
@@ -255,10 +299,29 @@ if CARPETA_EJEMPLOS.is_dir():
             for columna, ruta_ejemplo in zip(columnas, rutas_ejemplo):
                 with columna:
                     st.image(str(ruta_ejemplo), use_container_width=True)
-                    if st.button("Usar esta", key=str(ruta_ejemplo)):
-                        imagenes_a_analizar.append((ruta_ejemplo.name, Image.open(ruta_ejemplo), clase_elegida))
+                    clave_ejemplo = str(ruta_ejemplo)
+                    ya_seleccionada = clave_ejemplo in st.session_state.ejemplos_seleccionados
+                    if st.button("Quitar" if ya_seleccionada else "Usar esta", key=clave_ejemplo):
+                        if ya_seleccionada:
+                            del st.session_state.ejemplos_seleccionados[clave_ejemplo]
+                        else:
+                            st.session_state.ejemplos_seleccionados[clave_ejemplo] = clase_elegida
+                        st.rerun()
         else:
             st.caption("No hay imágenes de ejemplo para este subtipo todavía.")
+
+        if st.session_state.ejemplos_seleccionados:
+            st.caption(f"Ejemplos seleccionados: {len(st.session_state.ejemplos_seleccionados)}")
+
+for ruta_str, clase in st.session_state.ejemplos_seleccionados.items():
+    ruta_ejemplo = Path(ruta_str)
+    imagenes_a_analizar.append({
+        "nombre": ruta_ejemplo.name,
+        "imagen": Image.open(ruta_ejemplo),
+        "clase_real": clase,
+        "origen": "ejemplo",
+        "id": ruta_str,
+    })
 
 if imagenes_a_analizar:
     mostrar_resultados(imagenes_a_analizar)
