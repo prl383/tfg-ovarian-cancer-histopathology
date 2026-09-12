@@ -779,6 +779,8 @@ def ejecutar_experimento_completo(nombre_experimento: str, dataset_entrenamiento
         ax=ax, cmap="Blues", xticks_rotation=45, colorbar=True
     )
     ax.grid(False)
+    ax.set_xlabel("Etiqueta predicha")
+    ax.set_ylabel("Etiqueta real")
     _esc = "Con DA" if nombre_experimento == "conDA" else "Sin DA"
     ax.set_title(f"Matriz de confusión \u2014 Test ({_esc})")
     plt.tight_layout()
@@ -796,6 +798,8 @@ def ejecutar_experimento_completo(nombre_experimento: str, dataset_entrenamiento
         ax=ax, cmap="Oranges", xticks_rotation=45, colorbar=True
     )
     ax.grid(False)
+    ax.set_xlabel("Etiqueta predicha")
+    ax.set_ylabel("Etiqueta real")
     _esc = "Con DA" if nombre_experimento == "conDA" else "Sin DA"
     ax.set_title(f"Matriz de confusión \u2014 Train ({_esc})")
     plt.tight_layout()
